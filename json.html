@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <script>
+var alumno = {
+ "nombre" : "Juan",
+ "edad" : 17,
+ "cursos": [
+   {
+     "codigo" : "A34",
+	 "nombre" : "Algoritmos"
+   },
+   {
+     "codigo" : "B34",
+	 "nombre" : "Base de Datos ii"
+   }
+ ],
+ "direccion" : {
+   "tipo": "Calle"
+ }
+};
+
+function verResultado() {
+  var out = document.getElementById("output");
+  out.innerHTML = "";
+  var table = document.createElement("TABLE");
+  var trNombre = document.createElement("TR");
+  var trEdad = document.createElement("TR");
+  var trCursos = document.createElement("TR");
+
+  table.border = "1";
+
+  var td1 = document.createElement("TD");
+  var td2 = document.createElement("TD");
+  td1.innerText = "Nombre:";
+  td2.innerText = alumno.nombre;
+  trNombre.appendChild(td1);
+  trNombre.appendChild(td2);
+
+  td1 = document.createElement("TD");
+  td2 = document.createElement("TD");
+  td1.innerText = "Edad:";
+  td2.innerText = alumno.edad;
+  trEdad.appendChild(td1);
+  trEdad.appendChild(td2);
+
+  td1 = document.createElement("TD");
+  td2 = document.createElement("TD");
+  td1.innerText = "Cursos:";
+  var ulCursos = document.createElement("UL");
+  for (var i=0; i<alumno.cursos.length; i++) {
+	var liCurso = document.createElement("LI");
+	var aCurso = document.createElement("A");
+	
+	var buttonDelete = document.createElement("BUTTON");
+	buttonDelete.type = "button";
+  	buttonDelete.innerText = "X";
+  	buttonDelete.id = i;
+  	buttonDelete.addEventListener("click", function(){
+		//delete alumno.cursos[0];
+		//delCurso(i);
+		delCurso(this.id);
+	}, false);
+
+	aCurso.innerHTML = alumno.cursos[i].nombre;
+	aCurso.href = '#';
+	aCurso.id = i;
+	//aCurso.onclick = "test();";
+	//var x = i;
+	aCurso.addEventListener("click", function(){
+		showForm(this.id);
+	}, false);
+	
+
+	liCurso.appendChild(aCurso);
+	liCurso.appendChild(buttonDelete);
+	ulCursos.appendChild(liCurso);
+	liCurso.id = "curso-" + i;
+	//<a id="myLink" title="Click to do something" href="PleaseEnableJavascript.html" onclick="MyFunction();return false;">link text</a>
+  }
+  td2.appendChild(ulCursos);
+  trCursos.appendChild(td1);
+  trCursos.appendChild(td2);
+
+  table.appendChild(trNombre);
+  table.appendChild(trEdad);
+  table.appendChild(trCursos);
+  out.innerHTML = "";
+  out.appendChild(table);
+}
+function test(n){
+	console.log("bonjour "+ n);
+}
+function mod_Curso(i, cod, nom){
+	alumno.cursos[i].codigo = cod;
+	alumno.cursos[i].nombre = nom;
+	verResultado();
+}
+
+function delCurso(n){
+	delete alumno.cursos[n];
+	//verResultado();
+}
+
+function showForm(n){
+  var out = document.getElementById("output");
+  var form = document.createElement("FORM");
+  var fieldset = document.createElement("FIELDSET");
+  var legend = document.createElement("LEGEND");
+  var inputCod = document.createElement("INPUT");
+  var inputName = document.createElement("INPUT");
+  var buttonSubmit = document.createElement("BUTTON");
+  var buttonCancel = document.createElement("BUTTON");
+  var br = document.createElement("BR");
+
+  legend.innerText = "Modificar...";
+
+  inputCod.type = "text";
+  inputCod.name = "codigo";
+  inputCod.value = alumno.cursos[n].codigo;
+  inputName.type = "text";
+  inputName.name = "nombre_curso";
+  inputName.value = alumno.cursos[n].nombre;
+
+  buttonSubmit.type = "button";
+  buttonSubmit.innerText = "Send";
+  buttonSubmit.addEventListener("click", function(){
+  		mod_Curso(n, inputCod.value, inputName.value);
+		verResultado();
+	}, false);
+
+  buttonCancel.type = "button";
+  buttonCancel.innerText = "Cancelar";
+  buttonCancel.addEventListener("click", function(){
+		verResultado();
+	}, false);
+
+
+  fieldset.appendChild(legend);
+  fieldset.appendChild(inputCod);
+  //fieldset.innerHTML = "<br>";
+  fieldset.appendChild(inputName);
+  //fieldset.innerHTML = "<br>";
+  fieldset.appendChild(buttonSubmit);
+  fieldset.appendChild(buttonCancel);
+  form.appendChild(fieldset);
+  out.appendChild(form);
+}
+  </script>
+ </head>
+
+ <body>
+   <button onclick="verResultado()">Ver Resultado</button>
+   <div id="output" style="margin: 10px; padding: 5px;"></div>
+ </body>
+</html>
