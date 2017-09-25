@@ -12,8 +12,16 @@ var alumno = {
    },
    {
      "codigo" : "B34",
-	 "nombre" : "Base de Datos ii"
-   }
+	 "nombre" : "Base de Datos II"
+   },
+   {
+     "codigo" : "C45",
+	 "nombre" : "ADA"
+   },
+   {
+     "codigo" : "D56",
+	 "nombre" : "Estructura de Datos"
+   },
  ],
  "direccion" : {
    "tipo": "Calle"
@@ -27,6 +35,8 @@ function verResultado() {
   var trNombre = document.createElement("TR");
   var trEdad = document.createElement("TR");
   var trCursos = document.createElement("TR");
+
+  
 
   table.border = "1";
 
@@ -46,7 +56,8 @@ function verResultado() {
 
   td1 = document.createElement("TD");
   td2 = document.createElement("TD");
-  td1.innerText = "Cursos:";
+  td1.innerText = "Cursos:\n\n";
+  
   var ulCursos = document.createElement("UL");
   for (var i=0; i<alumno.cursos.length; i++) {
 	var liCurso = document.createElement("LI");
@@ -54,7 +65,7 @@ function verResultado() {
 	
 	var buttonDelete = document.createElement("BUTTON");
 	buttonDelete.type = "button";
-  	buttonDelete.innerText = "X";
+  	buttonDelete.innerText = " X ";
   	buttonDelete.id = i;
   	buttonDelete.addEventListener("click", function(){
 		//delete alumno.cursos[0];
@@ -66,7 +77,6 @@ function verResultado() {
 	aCurso.href = '#';
 	aCurso.id = i;
 	//aCurso.onclick = "test();";
-	//var x = i;
 	aCurso.addEventListener("click", function(){
 		showForm(this.id);
 	}, false);
@@ -98,8 +108,13 @@ function mod_Curso(i, cod, nom){
 }
 
 function delCurso(n){
-	delete alumno.cursos[n];
-	//verResultado();
+	alumno.cursos.splice(n,1)
+	//delete alumno.cursos[n];
+	verResultado();
+}
+
+function newCurso(cod, name){
+	alumno.cursos.push({"codigo": cod,"nombre": name})
 }
 
 function showForm(n){
@@ -111,10 +126,18 @@ function showForm(n){
   var inputName = document.createElement("INPUT");
   var buttonSubmit = document.createElement("BUTTON");
   var buttonCancel = document.createElement("BUTTON");
-  var br = document.createElement("BR");
+  var buttonNew = document.createElement("BUTTON");
+  
+  var aCod = document.createElement("A");
+  var aNom = document.createElement("A");
+  var br1 = document.createElement("BR");
+  var br2 = document.createElement("BR");
+  out.innerHTML = "";
+  verResultado();
 
   legend.innerText = "Modificar...";
-
+  aCod.innerText = "\nCodigo Curso:\n";
+  aNom.innerText = "\n\nNombre Curso:\n";
   inputCod.type = "text";
   inputCod.name = "codigo";
   inputCod.value = alumno.cursos[n].codigo;
@@ -123,24 +146,39 @@ function showForm(n){
   inputName.value = alumno.cursos[n].nombre;
 
   buttonSubmit.type = "button";
-  buttonSubmit.innerText = "Send";
+  buttonSubmit.innerText = "Save";
   buttonSubmit.addEventListener("click", function(){
   		mod_Curso(n, inputCod.value, inputName.value);
-		verResultado();
+		//verResultado();
 	}, false);
 
   buttonCancel.type = "button";
-  buttonCancel.innerText = "Cancelar";
+  buttonCancel.innerText = "Cancel";
   buttonCancel.addEventListener("click", function(){
 		verResultado();
 	}, false);
 
 
+  buttonNew.innerText = " X ";
+  buttonNew.id = "new";
+  buttonNew.type = "button";
+  buttonNew.innerText = "New";
+  buttonNew.addEventListener("click", function(){
+		newCurso(inputCod.value, inputName.value);
+		verResultado();
+	}, false);
+
+
+  
+
   fieldset.appendChild(legend);
+  fieldset.appendChild(aCod);
   fieldset.appendChild(inputCod);
-  //fieldset.innerHTML = "<br>";
+  fieldset.appendChild(aNom);
   fieldset.appendChild(inputName);
-  //fieldset.innerHTML = "<br>";
+  fieldset.appendChild(br2);
+  fieldset.appendChild(br1);
+  fieldset.appendChild(buttonNew);
   fieldset.appendChild(buttonSubmit);
   fieldset.appendChild(buttonCancel);
   form.appendChild(fieldset);
