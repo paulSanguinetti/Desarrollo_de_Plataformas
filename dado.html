@@ -25,8 +25,9 @@ function calculate(){
 	var newGame = document.createElement
 }
 function roll(player){
-  var x = (getRandomInt(1, 6));
+  var x = (getRandomInt(0, 6));
   score[player-1] = x;
+  test(x);
   var out = document.getElementById("output"+player);
   out.innerHTML = "";
   var dice = document.createElement("TABLE");
